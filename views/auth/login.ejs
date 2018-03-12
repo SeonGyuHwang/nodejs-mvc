@@ -1,0 +1,81 @@
+<%- include(VIEWS+'/common/head') %>
+<script type="text/javascript">
+'use strict';
+
+(function ($) {
+    var gAuth, googleInfo = {}, naver_api;
+
+    var _init = function(){
+
+		gapi.load('auth2', function(){
+			// Retrieve the singleton for the GoogleAuth library and set up the client.
+			gAuth = gapi.auth2.init({
+                apiKey: '<%=GOOGLE_API_KEY%>'
+				,client_id: '<%=GOOGLE_CLIENT_ID%>'
+				,scope: 'profile email'
+			});
+		});
+
+		var naverLogin = new naver.LoginWithNaverId(
+			{
+				clientId: "<%=NAVER_CLIENT_ID%>"
+				,callbackUrl: "http://<%=DOMAIN%>/apis/naver/login"
+				,isPopup: false
+				,loginButton: {
+					color: "green"
+					, type: 3
+					, height: 38
+				}
+			}
+		);
+		naverLogin.init();
+
+    };
+
+    $(function(){
+        _init();
+
+
+        $(this).on('click', '.googleAccountLoginBtn', function(e){
+
+			gAuth.signIn().then(function() {
+
+				if( gAuth.isSignedIn.get() === true ) {
+					var currentUser = gAuth.currentUser.get();
+					var googleUser = currentUser.getBasicProfile();
+
+					googleInfo = {
+						'email': googleUser.getEmail()
+						,'name': googleUser.getName()
+						,'id': googleUser.getId()
+						,'imageUrl': googleUser.getImageUrl()
+						,'givenName': googleUser.getGivenName()
+						,'familyName': googleUser.getFamilyName()
+					}
+
+					socket.emit('userLogin', {
+						'userId': googleInfo.email
+						,'loginType': 'google'
+						,'extra': googleInfo
+					});
+
+				}
+
+
+			});
+
+        });
+
+    });
+})( jQuery );
+</script>
+
+<div class="card card-login mx-auto mt-5">
+    <div class="card-header">로그인 선택</div>
+    <div class="card-body">
+        <a href="javascript:void(0);" class="btn btn-primary googleAccountLoginBtn">구글</a>
+        <a href="javascript:void(0);" id="naverIdLogin" class="naverAccountLoginBtn">네이버</a>
+    </div>
+</div>
+
+<%- include(VIEWS+'/common/footer') %>

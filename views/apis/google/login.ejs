@@ -1,0 +1,33 @@
+<%- include(VIEWS+'/common/head') %>
+<script type="text/javascript">
+(function($){
+    'use strict';
+
+    var gAuth, googleInfo = {};
+
+    var _init = function(){
+        gapi.load('auth2', function(){
+            // Retrieve the singleton for the GoogleAuth library and set up the client.
+            gAuth = gapi.auth2.init({
+                client_id: '<%=GOOGLE_CLIENT_ID%>'
+                ,fetch_basic_profile: true
+                ,scope: 'profile email'
+            });
+        });
+
+        $(window).resize(function(){
+            window.resizeTo(300, parseInt($('.content-wrapper').height()+83));
+        }).resize();
+    };
+
+    $(function(){
+        _init();
+    });
+
+})( jQuery );
+</script>
+<p>
+    잠시만 기다려주세요..
+</p>
+
+<%- include(VIEWS+'/common/footer') %>

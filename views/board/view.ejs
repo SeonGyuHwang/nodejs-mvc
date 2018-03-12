@@ -1,0 +1,50 @@
+<%- include(VIEWS+'/common/head') %>
+
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/board">게시판</a>
+    </li>
+</ol>
+
+<div class="card boardWrap viewWrap" data-write-popup-url="/board/write">
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered" width="100%" cellspacing="0">
+				<colgroup>
+					<col width="150px;" />
+					<col width="*;" />
+				</colgroup>
+				<tbody>
+				<tr>
+					<th class="text-center">조회수</th>
+					<td class="text-left"><%=row.view_cnt%></td>
+				</tr>
+				<tr>
+					<th class="text-center">작성자</th>
+					<td class="text-left"><%=row.writer_id%></td>
+				</tr>
+				<tr>
+					<th class="text-center">제목</th>
+					<td class="text-left"><%=row.board_title%></td>
+				</tr>
+				<tr>
+					<th class="text-center">내용</th>
+					<td class="text-left"><%-nl2br(row.board_content_decode)%></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="card-body text-center">
+
+	<% if( row.board_pk && isWrite === true ) { %>
+		<a href="javascript:void(0);" class="btn btn-primary writePopupBtn" data-pk="<%=row.board_pk%>">수정</a>
+		<a href="javascript:void(0);" class="btn btn-danger delBtn" data-pk="<%=row.board_pk%>">삭제</a>
+	<% } %>
+
+		<a href="<%=refer%>" class="btn btn-default">뒤로</a>
+	</div>
+</div>
+
+<%- include(VIEWS+'/common/footer') %>
