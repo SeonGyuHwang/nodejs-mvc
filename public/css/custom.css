@@ -72,12 +72,13 @@ a.btn-black {
 	font-weight: 900 !important;
 }
 
-.listWrap {
-	min-width:1350px;
-}
-
 @media screen and (max-width: 1650px) {
 	.content-wrapper {
 		overflow-x: auto;
+	}
+
+	.pagination {
+		margin: 10px 0 10px -15px !important;
+		display: inline-flex !important;
 	}
 }

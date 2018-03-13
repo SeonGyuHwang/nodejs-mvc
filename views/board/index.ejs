@@ -9,19 +9,20 @@
 
 <div class="card boardWrap listWrap" data-write-popup-url="/board/write">
 	<div class="card-body">
-		<a href="javascript:void(0);" class="btn btn-block btn-primary writePopupBtn">등록</a>
+		<div class="table-responsive">
+			<div class="form-inline">
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon1">기간검색</span>
+					<input type="text" class="form-control date-picker sch_start_date" value="<%=sch_start_date%>" placeholder="YYYY-MM-DD" />
+					<span class="input-group-addon">~</span>
+					<input type="text" class="form-control date-picker sch_end_date" value="<%=sch_end_date%>" placeholder="YYYY-MM-DD" />
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-			<div class="text-center">
-				<label>
-					기간검색 :
-					<input type="text" class="form-control-sm date-picker sch_start_date" value="<%=sch_start_date%>" style="width:120px;" />
-					~
-					<input type="text" class="form-control-sm date-picker sch_end_date" value="<%=sch_end_date%>" style="width:120px;" />
-				</label>
-			</div>
-			<table class="table table-bordered tableFixed publicDataTable" width="100%" cellspacing="0" data-base-uri="/board">
+			<table class="table table-bordered bulk_action publicDataTable" width="100%" cellspacing="0" data-base-uri="/board">
 				<colgroup>
 					<col width="8%;" />
 					<col width="*;" />
