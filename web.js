@@ -34,10 +34,11 @@ global.SESSION_SECRET = '$hofj#h*@fue!h';
 // App Path Start
 global.ROOT = __dirname;
 global.VIEWS = ROOT+'/views';
-global.ROUTES = ROOT+'/routes';
 global.PUBLIC = ROOT+'/public';
 global.RESOURCE = ROOT+'/resource';
+
 global.DAO = RESOURCE+'/dao';
+global.ROUTES = RESOURCE+'/routes';
 global.SERVICE = RESOURCE+'/service';
 // App Path End
 
