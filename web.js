@@ -76,10 +76,9 @@ global.GOOGLE_CLIENT_SECRET_ID = 'GOOGLE_CLIENT_SECRET_ID';
 // App API End
 
 // App DB Start
-const ip = require("ip");
 global.mysql = require('mysql');
 global.pool = mysql.createPool({
-	host     : /^(192|172)\./.test(ip.address()) ? 'localhost' : '10.0.0.1',
+	host     : process.env.NODE_ENV === 'DEV' ? 'localhost' : '10.0.0.1',
 	user     : 'nodejs-mvc',
 	password : 'nodejs-mvc',
 	database : 'nodejs_mvc',
@@ -102,7 +101,7 @@ const http = require('http');
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '8001');
+const port = normalizePort(process.env.PORT || '8080');
 app.set('port', port);
 app.disable('view cache');
 
