@@ -79,8 +79,8 @@ global.GOOGLE_CLIENT_SECRET_ID = 'GOOGLE_CLIENT_SECRET_ID';
 global.mysql = require('mysql');
 global.pool = mysql.createPool({
 	host     : process.env.NODE_ENV === 'DEV' ? 'localhost' : '10.0.0.1',
-	user     : 'nodejs-mvc',
-	password : 'nodejs-mvc',
+	user     : 'nodejs_mvc',
+	password : 'nodejs_mvc',
 	database : 'nodejs_mvc',
 	connectionLimit : 100,
 	waitForConnections : true,
