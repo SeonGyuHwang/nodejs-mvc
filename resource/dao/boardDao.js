@@ -23,13 +23,10 @@ boardDao.getDataRow = function(args, callback){
                     setQuery += ' 		AND board_pk = ? ';
 
                 conn.query(setQuery, params, function (err, rows) {
-                    if(err){
-                        conn.release();
-                        reject(err);
-                    }
                     conn.release();
+                    if(err) reject(err);
 
-                    tmpRow = rows[0] || {};
+                    tmpRow = rows.shift() || {};
 
                     if( !Func.isEmpty(tmpRow) ) {
                         tmpRow['board_title_decode'] = Func.htmlspecialchars_decode(tmpRow['board_title']);
@@ -61,6 +58,7 @@ boardDao.getDataCount = function(args, callback){
 	return new Promise(function(resolve, reject) {
 
         pool.getConnection(function(err, conn){
+
             var setQuery = 'SELECT ';
                 setQuery += ' 	COUNT(board_pk) AS cnt ';
                 setQuery += ' FROM board ';
@@ -87,15 +85,12 @@ boardDao.getDataCount = function(args, callback){
             }
 
             conn.query(setQuery, params, function (err, rows) {
-                if(err){
-                    conn.release();
-                    reject(err);
-                }
                 conn.release();
+                if(err) reject(err);
 
-                tmpRow = rows[0] || {};
+                tmpRow = rows.shift() || {};
 
-                var totalCount = tmpRow.cnt || 0;
+                var totalCount = parseInt(tmpRow.cnt) || 0;
 
                 if (typeof callback === "function")
                     callback.apply(null, [totalCount]);
@@ -151,23 +146,20 @@ boardDao.getDataList = function(args, callback){
             }
 
             conn.query(setQuery, params, function (err, rows) {
-                if(err){
-                    conn.release();
-                    reject(err);
-                }
                 conn.release();
+                if(err) reject(err);
 
-                for(var i in rows) {
+                rows.forEach(function(row){
 
-                    rows[i]['created_date_format'] = moment(rows[i]['created_date'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-                    rows[i]['created_datetime'] = moment(rows[i]['created_date'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
+                    row['created_date_format'] = moment(row['created_date'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+                    row['created_datetime'] = moment(row['created_date'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
 
-                    rows[i]['updated_date_format'] = moment(rows[i]['updated_date'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
-                    rows[i]['updated_datetime'] = moment(rows[i]['updated_date'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
+                    row['updated_date_format'] = moment(row['updated_date'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+                    row['updated_datetime'] = moment(row['updated_date'], 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
 
-                    tmpRow.push(rows[i]);
+                    tmpRow.push(row);
 
-                }
+                });
 
                 if (typeof callback === "function")
                     callback.apply(null, [tmpRow]);
@@ -190,17 +182,14 @@ boardDao.insertData = function (params) {
 	if( add_params.board_content )
 	    add_params.board_content = Func.htmlspecialchars(add_params.board_content);
 
-	if( typeof add_params == 'object' ) {
+	if( typeof add_params === 'object' ) {
 
 		pool.getConnection(function(err, conn){
 			conn.query('INSERT INTO `board` SET ?', add_params, function (err, rows) {
-				if(err){
-					conn.release();
-					throw err;
-				}
+				conn.release();
+				if(err) throw err;
 
 				//var insert_id = rows.insertId;
-				conn.release();
 			});
 		});
 
@@ -210,7 +199,7 @@ boardDao.insertData = function (params) {
 boardDao.updateData = function(idx, params){
 	var add_params = params || {};
 
-	if( typeof add_params == 'object' ) {
+	if( typeof add_params === 'object' ) {
 
         if( add_params.board_title )
             add_params.board_title = Func.htmlspecialchars(add_params.board_title);
@@ -223,12 +212,8 @@ boardDao.updateData = function(idx, params){
 
 		pool.getConnection(function(err, conn){
 			conn.query(setQuery, [add_params, idx], function (err, rows) {
-				if(err){
-					conn.release();
-					throw err;
-				}
-
 				conn.release();
+				if(err) throw err;
 			});
 		});
 
