@@ -1,2 +1,2 @@
-nodejs : > 12
+nodejs : >= 12
 
